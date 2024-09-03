@@ -1,6 +1,12 @@
 export const Configuration = {
-  // show terminal window
+  // run background
   terminal: 'showTerminal',
-  // storage scripts
-  storage: 'storageScripts'
+  // tree map
+  tree: 'treeMap',
+  // cache scripts
+  cache: 'cache',
+  // exclude search
+  exclude: 'excludeFiles',
+  // nvm where
+  whichNvm: 'whichNvm',
 };

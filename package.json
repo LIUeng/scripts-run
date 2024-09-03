@@ -30,7 +30,8 @@
         },
         {
           "id": "nvm",
-          "name": "Nvm"
+          "name": "Nvm",
+          "visibility": "collapsed"
         }
       ]
     },
@@ -38,12 +39,16 @@
       {
         "view": "run",
         "contents": "Before run scripts, please check your node version right."
+      },
+      {
+        "view": "nvm",
+        "contents": "Use nvm to manage NodeJS version [learn more nvm](https://github.com/nvm-sh/nvm).\n[Install After Reload](command:nvm.reload)"
       }
     ],
     "commands": [
       {
-        "command": "run.refresh",
-        "title": "Refresh Scripts",
+        "command": "run.reload",
+        "title": "Reload Scripts",
         "icon": "$(refresh)"
       },
       {
@@ -54,24 +59,39 @@
       {
         "command": "run.play",
         "title": "Play",
-        "icon": "$(debug-start)"
+        "icon": "$(play)"
       },
       {
         "command": "run.delete",
         "title": "Delete",
-        "icon": "$(close)"
+        "icon": "$(trash)"
+      },
+      {
+        "command": "run.deleteAll",
+        "title": "Delete All",
+        "icon": "$(close-all)"
+      },
+      {
+        "command": "nvm.reload",
+        "title": "Reload Nvm",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "nvm.choice",
+        "title": "Choose node version",
+        "icon": "$(notebook-state-success)"
       }
     ],
     "menus": {
       "view/title": [
         {
-          "command": "run.refresh",
+          "command": "run.reload",
           "when": "view == run",
           "group": "navigation"
         },
         {
-          "command": "run.add",
-          "when": "view == run",
+          "command": "nvm.reload",
+          "when": "view == nvm",
           "group": "navigation"
         }
       ],
@@ -79,12 +99,27 @@
         {
           "command": "run.delete",
           "when": "view == run && viewItem == scriptItem",
-          "group": "inline"
+          "group": "inline@2"
         },
         {
           "command": "run.play",
           "when": "view == run && viewItem == scriptItem",
-          "group": "inline"
+          "group": "inline@1"
+        },
+        {
+          "command": "run.deleteAll",
+          "when": "view == run && viewItem == lastScriptFolder",
+          "group": "inline@2"
+        },
+        {
+          "command": "run.add",
+          "when": "view == run && viewItem == lastScriptFolder",
+          "group": "inline@1"
+        },
+        {
+          "command": "nvm.choice",
+          "when": "view == nvm && viewItem == nvmItem",
+          "group": "inline@1"
         }
       ]
     },
@@ -96,10 +131,28 @@
           "default": true,
           "description": "Run show terminal window(background)"
         },
-        "scriptsRun.storageScripts": {
+        "scriptsRun.treeMap": {
+          "type": "boolean",
+          "default": false,
+          "description": "Depth tree search the scripts support"
+        },
+        "scriptsRun.cache": {
           "type": "boolean",
           "default": true,
           "description": "Storage workspace scripts"
+        },
+        "scriptsRun.excludeFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["node_modules/**", "bower_components/**"],
+          "description": "Exclude search scripts files(use glob pattern)"
+        },
+        "scriptsRun.whichNvm": {
+          "type": "string",
+          "default": "",
+          "description": "The nvm where install default(~/.nvm)"
         }
       }
     }
@@ -119,16 +172,19 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.89.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
+    "@types/vscode": "^1.89.0",
     "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.1",
-    "eslint": "^8.57.0",
-    "esbuild": "^0.20.2",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.4.5",
     "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.3.9"
+    "@vscode/test-electron": "^2.3.9",
+    "esbuild": "^0.20.2",
+    "eslint": "^8.57.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "glob": "^10.4.1"
   }
 }

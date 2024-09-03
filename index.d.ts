@@ -1,5 +1,10 @@
 declare namespace ScriptsRun {
-  type StoragePropsValue = Array<{ k: string, v: string }>;
+  type StorageItem = { k: string, v: string };
+  type StoragePropsValue = StorageItem[];
 
   type StorageProps = { [k: string]: StoragePropsValue }
+
+  type StorageValue = { [k: string]: string }
+
+  type StorageOperate = 'add' | 'del' | 'delAll';
 }
