@@ -3,7 +3,7 @@
   "name": "scripts-run",
   "displayName": "scripts-run",
   "description": "Run package.json scripts for vscode extension",
-  "version": "0.0.2",
+  "version": "0.1.2",
   "license": "MIT",
   "repository": {
     "type": "git",

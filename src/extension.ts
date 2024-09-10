@@ -7,14 +7,11 @@ import { NvmProvider } from './NvmProvider';
 export function activate(context: vscode.ExtensionContext) {
 	// multi workspace folders support
 	const workspaceFolders = vscode.workspace.workspaceFolders || [];
-	// cache terminal
-	const terminals = new Map<string, vscode.Terminal>();
 	// default open settings
 	const settings = vscode.workspace.getConfiguration(EXT_NAME);
 
 	// register: nvm palette
-	let useNvm = false;
-	let isToggle = false;
+	let useNvm: Map<string, boolean> | null = null;
 	const nvmProvider = new NvmProvider();
 	vscode.window.registerTreeDataProvider('nvm', nvmProvider);
 	// nvm.reload
@@ -23,11 +20,10 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	// nvm.choice -> choose the node version
 	vscode.commands.registerCommand('nvm.choice', (item: vscode.TreeItem) => {
-		useNvm = false;
-		isToggle = true;
+		useNvm = new Map<string, boolean>();
 		nvmProvider.nodeVersion = (item.label as vscode.TreeItemLabel)?.label;
 		nvmProvider.refresh();
-		vscode.window.showInformationMessage(`Choose node ${nvmProvider.nodeVersion} successfully`);
+		vscode.window.showInformationMessage(`Choose node version -> ${nvmProvider.nodeVersion} successfully`);
 	});
 
 	// register: run palette
@@ -49,6 +45,10 @@ export function activate(context: vscode.ExtensionContext) {
 				return null;
 			}
 		});
+		if (!label) {
+			return;
+		}
+
 		const desc = await vscode.window.showInputBox({
 			placeHolder: `Type the (${label}) script value`,
 			validateInput(value) {
@@ -57,8 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			}
 		});
-
-		if (!label || !desc) {
+		if (!desc) {
 			return;
 		}
 
@@ -73,11 +72,9 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	// run.play
 	vscode.commands.registerCommand('run.play', (node: ScriptItem) => {
-		let terminal;
+		let terminal = vscode.window.terminals.find(t => t.name === node.label);
 
-		if (terminals.has(node.label)) {
-			terminal = terminals.get(node.label);
-		} else {
+		if (!terminal) {
 			terminal = vscode.window.createTerminal({
 				name: node.label,
 				iconPath: new vscode.ThemeIcon('keyboard'),
@@ -85,12 +82,6 @@ export function activate(context: vscode.ExtensionContext) {
 				// shellPath: 'npm',
 				// shellArgs: ['run', node.script],
 			});
-			terminals.set(node.label, terminal);
-			isToggle && (useNvm = false);
-		}
-
-		if (!terminal) {
-			return;
 		}
 
 		// show terminal window
@@ -111,18 +102,12 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		if (!useNvm && nvmProvider.nodeVersion) {
+		if (useNvm !== null && !useNvm.get(node.label) && nvmProvider.nodeVersion) {
 			terminal.sendText(`nvm use ${nvmProvider.nodeVersion}`);
-			useNvm = true;
+			useNvm.set(node.label, true);
 		}
 
 		terminal.sendText(terminalTxt, true);
-	});
-
-	// terminal close
-	vscode.window.onDidCloseTerminal((terminal) => {
-		// vscode.window.showInformationMessage(`Terminal close: ${terminal.name}`);
-		terminals.delete(terminal.name);
 	});
 }
 
