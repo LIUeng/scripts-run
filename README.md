@@ -8,7 +8,7 @@
 
 ## Install or Download
 
-[VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=LIUeng.scripts-run)
+[VS Code Marketplace scripts-run](https://marketplace.visualstudio.com/items?itemName=LIUeng.scripts-run)
 
 ## Support
 
