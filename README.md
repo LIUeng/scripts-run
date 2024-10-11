@@ -21,7 +21,7 @@
 
 > Multiple workspace folders
 
-https://github.com/user-attachments/assets/88c1e983-b12c-4312-b62a-0b0ccf6a7a91
+<video controls autoplay src="https://github.com/user-attachments/assets/88c1e983-b12c-4312-b62a-0b0ccf6a7a91"></video>
 
 > Package.json scripts
 
@@ -31,11 +31,11 @@ https://github.com/user-attachments/assets/88c1e983-b12c-4312-b62a-0b0ccf6a7a91
 
 > Custom scripts
 
-https://github.com/user-attachments/assets/86be8721-0159-4b4d-8036-ac73701cc748
+<video controls autoplay src="https://github.com/user-attachments/assets/86be8721-0159-4b4d-8036-ac73701cc748"></video>
 
 > Switch node version if nvm installed
 
-https://github.com/user-attachments/assets/202213b8-ed58-4f17-a943-767a1562569a
+<video controls autoplay src="https://github.com/user-attachments/assets/202213b8-ed58-4f17-a943-767a1562569a"></video>
 
 ## Settings
 
