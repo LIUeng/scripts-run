@@ -9,4 +9,6 @@ export const Configuration = {
   exclude: 'excludeFiles',
   // nvm where
   whichNvm: 'whichNvm',
+  // run script type
+  whichType: 'whichType',
 };

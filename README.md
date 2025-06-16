@@ -1,10 +1,16 @@
 # ScriptsRun VS Code extension
 
+> Translate
+
+[中文](./README_ch.md)
+
 `Run package.json scripts`
 
 - npm
 - pnpm
 - yarn
+- bun
+- ...(You Wanted)
 
 ## Install or Download
 
@@ -28,7 +34,6 @@
 ![image](https://github.com/user-attachments/assets/f7965a72-6dc1-4726-8c07-5345ac9dd10b)
 ![image](https://github.com/user-attachments/assets/b189f937-d7a1-4a37-b778-ea7c7d9452f9)
 
-
 > Custom scripts
 
 <video controls autoplay src="https://github.com/user-attachments/assets/86be8721-0159-4b4d-8036-ac73701cc748"></video>
@@ -39,15 +44,15 @@
 
 ## Settings
 
-| ID                                                       | Description                                              | Default                                        |
-| -------------------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------- |
-| scriptsRun.cache                                         | Storage workspace scripts                                | true                                           |
-| scriptsRun.excludeFiles                                  | Exclude search scripts files(use glob pattern)           | ["node_modules/\*\*", "bower_components/\*\*"] |
-| scriptsRun.showTerminal                                  | Run show terminal window(background)                     | true                                           |
-| scriptsRun.treeMap                                       | Depth tree search the scripts support                    | false                                          |
-| scriptsRun.whichNvmThe nvm where install default(~/.nvm) | scriptsRun.whichNvmThe nvm where install default(~/.nvm) | ~/.nvm                                         |
+| ID                      | Description                                                                                                     | Default                                        |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| scriptsRun.cache        | Storage workspace scripts                                                                                       | true                                           |
+| scriptsRun.excludeFiles | Exclude search scripts files(use glob pattern)                                                                  | ["node_modules/\*\*", "bower_components/\*\*"] |
+| scriptsRun.showTerminal | Run show terminal window(background)                                                                            | true                                           |
+| scriptsRun.treeMap      | Depth tree search the scripts support                                                                           | false                                          |
+| scriptsRun.whichNvm     | The nvm where install default(~/.nvm)                                                                           | ~/.nvm                                         |
+| scriptsRun.whichType    | If specified, use setting first(npm yarn pnpm bun etc.), if not specified, it will be automatically identified. | npm                                            |
 
 ## LICENSE
 
 MIT
-

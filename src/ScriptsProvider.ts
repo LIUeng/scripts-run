@@ -4,7 +4,7 @@ import * as fs from "node:fs";
 import { Configuration } from "./settings";
 import { EXT_NAME } from "./constants";
 import { globSync } from 'glob';
-import { pathExists } from "./utils";
+import { getWhichType, pathExists } from "./utils";
 
 export class ScriptsProvider implements vscode.TreeDataProvider<ScriptItem> {
   private _onDidChangeTreeData: vscode.EventEmitter<
@@ -50,7 +50,9 @@ export class ScriptsProvider implements vscode.TreeDataProvider<ScriptItem> {
         index === 0 ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed,
         '',
         rootPath,
-        pathExists(path.join(rootPath, 'package.json')) ? 'lastScriptFolder' : void 0
+        pathExists(path.join(rootPath, 'package.json')) ? 'lastScriptFolder' : void 0,
+        0,
+        getWhichType(rootPath),
       );
     });
   }
@@ -75,7 +77,9 @@ export class ScriptsProvider implements vscode.TreeDataProvider<ScriptItem> {
         vscode.TreeItemCollapsibleState.None,
         scripts[name],
         rootPath,
-        'scriptItem'
+        'scriptItem',
+        0,
+        getWhichType(rootPath)
       );
     });
   }
@@ -89,7 +93,7 @@ export class ScriptsProvider implements vscode.TreeDataProvider<ScriptItem> {
           return [];
         }
         return scripts.map(item => {
-          return new ScriptItem(item.k, vscode.TreeItemCollapsibleState.None, item.v, rootPath, 'scriptItem', 1);
+          return new ScriptItem(item.k, vscode.TreeItemCollapsibleState.None, item.v, rootPath, 'scriptItem', 1, getWhichType(rootPath));
         });
       } catch(e) {
         // ignore error
@@ -234,7 +238,8 @@ export class ScriptItem extends vscode.TreeItem {
     public readonly script: string,
     public readonly rootPath: string,
     public readonly levelValue: string = 'scriptFolder',
-    public readonly type: number = 0
+    public readonly type: number = 0,
+    public readonly whichType: string = 'npm',
   ) {
     super(label, collapsibleState);
 
@@ -252,5 +257,8 @@ export class ScriptItem extends vscode.TreeItem {
           ? new vscode.ThemeIcon("reactions")
           : new vscode.ThemeIcon("repl")
         : new vscode.ThemeIcon("root-folder");
+    
+    // npm yarn pnpm
+    this.whichType = whichType;
   }
 }

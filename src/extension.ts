@@ -70,19 +70,23 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('run.deleteAll', (node: ScriptItem) => {
 		nodeScriptsProvider.deleteAll(node);
 	});
-	// run.play
-	vscode.commands.registerCommand('run.play', (node: ScriptItem) => {
-		let terminal = vscode.window.terminals.find(t => t.name === node.label);
+
+	// run type
+	function run(node: ScriptItem, isNewTerminal: boolean = true) {
+		let name = isNewTerminal ? node.label : 'run';
+		let terminal = vscode.window.terminals.find(t => t.name === name);
+		let whichType = settings.get(Configuration.whichType) || node.whichType || 'npm';
 
 		if (!terminal) {
 			terminal = vscode.window.createTerminal({
-				name: node.label,
+				name,
 				iconPath: new vscode.ThemeIcon('keyboard'),
 				cwd: node.rootPath,
-				// shellPath: 'npm',
-				// shellArgs: ['run', node.script],
 			});
 		}
+
+		// Send Ctrl+C to stop the current process
+		// terminal.sendText('\x03');
 
 		// show terminal window
 		if (settings.get(Configuration.terminal) === true) {
@@ -90,12 +94,12 @@ export function activate(context: vscode.ExtensionContext) {
 		} else {
 			terminal.hide();
 		}
-
+		
 		let terminalTxt = '';
 		if (node.type === 1) {
 			terminalTxt = (node.description || '') as string;
 		} else {
-			terminalTxt = `npm run ${node.label}`;
+			terminalTxt = `${whichType} run ${node.label}`;
 		}
 
 		if (!terminalTxt) {
@@ -108,6 +112,14 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		terminal.sendText(terminalTxt, true);
+	}
+	// run.play
+	vscode.commands.registerCommand('run.play', async (node: ScriptItem) => {
+		run(node, false);
+	});
+	// run.play-new
+	vscode.commands.registerCommand('run.play-new', async (node: ScriptItem) => {
+		run(node);
 	});
 }
 
