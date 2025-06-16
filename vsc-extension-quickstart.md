@@ -1,5 +1,21 @@
 # Welcome to your VS Code Extension
 
+## Write Extension
+
+### Scaffold
+
+```shell
+npx --package yo --package generator-code -- yo code
+```
+
+### Developing the extension
+
+.vscode -> tasks.json
+
+### Debugging the extension
+
+VSCode debug -> Run extension
+
 ## What's in the folder
 
 * This folder contains all of the files necessary for your extension.
